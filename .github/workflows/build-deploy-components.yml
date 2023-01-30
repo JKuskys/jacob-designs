@@ -10,10 +10,10 @@ concurrency: ci-${{ github.ref }}
 
 jobs:
   build:
+    name: Build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
+    with:
+      node-version: 14
 
     steps:
       - uses: actions/checkout@v3
@@ -26,10 +26,12 @@ jobs:
       - run: npm run build-storybook
 
   test-e2e:
+    name: Test e2e
+    needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
+    with:
+      node-version: 14
+
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
@@ -40,10 +42,11 @@ jobs:
       - run: npm run test-e2e
 
   test-components:
+    name: Test components
+    needs: build
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
+    with:
+      node-version: 14
 
     steps:
       - uses: actions/checkout@v3
@@ -54,11 +57,12 @@ jobs:
       - run: npm install
       - run: npm run test-jest
 
-  increase-version:   
+  increase-version:
+    name: Bump package version
+    needs: [build, test-e2e, test-components]   
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
+    with:
+      node-version: 14
 
     steps:
       - uses: actions/checkout@v3
@@ -70,10 +74,12 @@ jobs:
       - run: git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" --follow-tags
 
   publish-storybook:
+    name: Deploy storybook
+    needs: [build, test-e2e, test-components, increase-version]  
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
+    with:
+      node-version: 14
+
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -91,11 +97,12 @@ jobs:
 
 
   publish-package:
+    name: Deploy npm package
+    needs: [build, test-e2e, test-components, increase-version]  
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [14.x]
-        
+    with:
+      node-version: 14
+
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
