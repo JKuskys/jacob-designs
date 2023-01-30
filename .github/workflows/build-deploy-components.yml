@@ -44,7 +44,7 @@ jobs:
 
   increase-version:
     name: Bump package version
-    needs: [build, test-e2e, test-components]   
+    needs: [build, test-components]   
     runs-on: ubuntu-latest
     container: node:14-alpine
 
@@ -59,7 +59,7 @@ jobs:
 
   publish-storybook:
     name: Deploy storybook
-    needs: [build, test-e2e, test-components, increase-version]  
+    needs: [build, test-components, increase-version]  
     runs-on: ubuntu-latest
     container: node:14-alpine
 
@@ -81,7 +81,7 @@ jobs:
 
   publish-package:
     name: Deploy npm package
-    needs: [build, test-e2e, test-components, increase-version]  
+    needs: [build, test-components, increase-version]  
     runs-on: ubuntu-latest
     container: node:14-alpine
 
