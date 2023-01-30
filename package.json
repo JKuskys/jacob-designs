@@ -12,10 +12,11 @@
   "unpkg": "dist/jacob-designs/jacob-designs.esm.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ionic-team/stencil-component-starter.git"
+    "url": "git+https://https://github.com/JKuskys/jacob-designs"
   },
   "files": [
     "dist/",
+    "css/",
     "loader/"
   ],
   "scripts": {
