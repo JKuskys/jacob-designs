@@ -44,17 +44,13 @@ jobs:
     name: Bump package version
     needs: [build, test-components]   
     runs-on: ubuntu-latest
-    container: node:14-alpine
 
     steps:
-      with:
-        args: install --prefer-dist --no-dev
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" --follow-tags
-      - run: git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" --tags
 
   publish-storybook:
     name: Deploy storybook
