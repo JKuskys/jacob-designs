@@ -48,6 +48,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          args: install --prefer-dist --no-dev
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
