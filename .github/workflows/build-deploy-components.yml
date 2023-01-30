@@ -47,7 +47,7 @@ jobs:
     container: node:14-alpine
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
