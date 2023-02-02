@@ -1,57 +1,12 @@
 {
-  "name": "jkd-universal-components",
-  "version": "0.2.0",
-  "description": "Stencil Component Starter",
-  "main": "dist/index.cjs.js",
-  "module": "dist/index.js",
-  "es2015": "dist/esm/index.mjs",
-  "es2017": "dist/esm/index.mjs",
-  "types": "dist/types/index.d.ts",
-  "collection": "dist/collection/collection-manifest.json",
-  "collection:main": "dist/collection/index.js",
-  "unpkg": "dist/jacob-designs/jacob-designs.esm.js",
-  "repository": {
-    "type": "git",
-    "url": "git+https://https://github.com/JKuskys/jacob-designs"
-  },
-  "files": [
-    "dist/",
-    "loader/"
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
   ],
-  "scripts": {
-    "build": "stencil build --docs",
-    "start": "stencil build --dev --watch --serve",
-    "test-jest": "stencil test --spec",
-    "test-e2e": "stencil test --e2e",
-    "test.watch": "stencil test --spec --e2e --watchAll",
-    "generate": "stencil generate",
-    "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
-  },
-  "dependencies": {
-    "@stencil/core": "^3.0.0"
-  },
   "devDependencies": {
-    "@babel/core": "^7.20.12",
-    "@storybook/addon-actions": "^6.5.16",
-    "@storybook/addon-essentials": "^6.5.16",
-    "@storybook/addon-interactions": "^6.5.16",
-    "@storybook/addon-links": "^6.5.16",
-    "@storybook/builder-webpack4": "^6.5.16",
-    "@storybook/html": "^6.5.16",
-    "@storybook/manager-webpack4": "^6.5.16",
-    "@storybook/testing-library": "^0.0.13",
-    "@types/jest": "^27.5.2",
-    "@types/node": "^16.18.11",
-    "babel-loader": "^8.3.0",
-    "jest": "^27.5.1",
-    "jest-cli": "^27.5.1",
-    "puppeteer": "^19.5.2"
-  },
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/ionic-team/stencil-component-starter/issues"
-  },
-  "homepage": "https://github.com/ionic-team/stencil-component-starter#readme",
-  "author": "j_kuskys"
+    "@types/node": "^18.11.18",
+    "lerna": "^6.4.1",
+    "typescript": "^4.9.5"
+  }
 }
