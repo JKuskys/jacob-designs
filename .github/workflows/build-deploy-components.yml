@@ -11,10 +11,12 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     container: node:14-alpine
+    defaults:
+      run:
+        working-directory: ./packages/jkd-universal-components
 
     steps:
       - uses: actions/checkout@v3
-      - run: cd packages/jkd-universal-components
       - run: npm install
       - run: npm run build
       - run: npm run build-storybook
@@ -24,10 +26,12 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container: node:14-alpine
+    defaults:
+      run:
+        working-directory: ./packages/jkd-universal-components
 
     steps:
       - uses: actions/checkout@v3
-      - run: cd packages/jkd-universal-components
       - run: npm install
       - run: npm run test-e2e
 
@@ -36,10 +40,12 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container: node:14-alpine
+    defaults:
+      run:
+        working-directory: ./packages/jkd-universal-components
 
     steps:
       - uses: actions/checkout@v3
-      - run: cd packages/jkd-universal-components
       - run: npm install
       - run: npm run test-jest
 
@@ -47,10 +53,12 @@ jobs:
     name: Bump package version
     needs: [build, test-components]   
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./packages/jkd-universal-components
 
     steps:
       - uses: actions/checkout@v2
-      - run: cd packages/jkd-universal-components
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: VERSION=$(node -p "require('./package.json').version")
       - run: git tag ${VERSION}
@@ -61,6 +69,9 @@ jobs:
     needs: [build, test-components, increase-version]  
     runs-on: ubuntu-latest
     container: node:14-alpine
+    defaults:
+      run:
+        working-directory: ./packages/jkd-universal-components
 
     steps:
       - name: Checkout 🛎️
@@ -68,7 +79,6 @@ jobs:
 
       - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
-          cd packages/jkd-universal-components
           npm install
           npm run build
           npm run build-storybook
@@ -84,11 +94,13 @@ jobs:
     needs: [build, test-components, increase-version]  
     runs-on: ubuntu-latest
     container: node:14-alpine
+    defaults:
+      run:
+        working-directory: ./packages/jkd-universal-components
 
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3      
-      - run: cd packages/jkd-universal-components
+      - uses: actions/setup-node@v3
       - run: npm install
       - run: npm run build
       - uses: JS-DevTools/npm-publish@v1
