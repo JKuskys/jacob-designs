@@ -9,5 +9,12 @@
   "dependencies": {
     "tslib": "^2.3.0"
   },
-  "sideEffects": false
+  "sideEffects": false,
+  "description": "This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.1.0.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "j_kuskys",
+  "license": "ISC"
 }
