@@ -1,4 +1,12 @@
 {
+  "scripts": {
+    "build": "lerna run build --stream",
+    "test": "lerna run test --stream",
+    "test-e2e": "lerna run test-e2e --stream",
+    "test-jest": "lerna run test-jest --stream",
+    "build-storybook": "lerna run build-storybook --stream",
+    "bootstrap": "lerna bootstrap"
+  },
   "name": "root",
   "private": true,
   "workspaces": [

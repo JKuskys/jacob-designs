@@ -4,11 +4,10 @@ import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, Even
 
 import { ProxyCmp, proxyOutputs } from './angular-component-lib/utils';
 
-import type { Components } from 'jkd-universal-components/components';
+import { Components } from 'jkd-universal-components';
 
-import { defineCustomElement as defineMyComponent } from 'jkd-universal-components/components/my-component.js';
+
 @ProxyCmp({
-  defineCustomElementFn: defineMyComponent,
   inputs: ['first', 'last', 'middle']
 })
 @Component({
