@@ -14,12 +14,10 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
-      - name: Install 🔧
+      - name: Install and build 🔧
         run: |
           npm install
           npm run bootstrap
-      - name: Build 🔧
-        run: |
           npm run build
           npm run build-storybook
 
