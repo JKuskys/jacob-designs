@@ -24,9 +24,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container: node:14-alpine
-    defaults:
-      run:
-        working-directory: ./packages/jkd-universal-components
 
     steps:
       - uses: browser-actions/setup-chrome@v1
@@ -40,9 +37,6 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     container: node:14-alpine
-    defaults:
-      run:
-        working-directory: ./packages/jkd-universal-components
 
     steps:
       - uses: actions/checkout@v3
