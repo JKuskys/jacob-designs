@@ -10,14 +10,18 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    container: node:14-alpine
 
     steps:
-      - uses: actions/checkout@v3
-      - run: npm install
-      - run: npm run bootstrap
-      - run: npm run build
-      - run: npm run build-storybook
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Install 🔧
+        run: |
+          npm install
+          npm run bootstrap
+      - name: Build 🔧
+        run: |
+          npm run build
+          npm run build-storybook
 
   test-e2e:
     name: Test e2e
@@ -25,14 +29,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3      
-      - uses: actions/setup-node@v2
-      with:
-        node-version: '14.x'
-        registry-url: 'https://registry.npmjs.org'
-      - run: npm install
-      - run: npm run bootstrap
-      - run: npm run test-e2e
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Install 🔧
+        run: |
+          npm install
+          npm run bootstrap
+      - name: Test 🔧
+        run: |
+          npm run test-e2e
 
   test-components:
     name: Test components
@@ -40,14 +45,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v2
-        with:
-          node-version: '14.x'
-          registry-url: 'https://registry.npmjs.org'
-      - run: npm install
-      - run: npm run bootstrap
-      - run: npm run test-jest
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Install 🔧
+        run: |
+          npm install
+          npm run bootstrap
+      - name: Test 🔧
+        run: |
+          npm run test-jest
 
   publish-storybook:
     name: Deploy storybook 
@@ -58,7 +64,7 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
 
-      - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
+      - name: Install and Build 🔧
         run: |
           npm install
           npm run bootstrap
@@ -75,16 +81,15 @@ jobs:
     name: Deploy npm package
     runs-on: ubuntu-latest
     env:
-      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # set this token manually
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
 
     - name: Checkout 🛎️
       uses: actions/checkout@v2
       with:
-        fetch-depth: "0" # pulls all history and tags for Lerna to detect what packages changed.
-        token: ${{ secrets.GITHUB_TOKEN }} # this token is available by default
+        fetch-depth: "0"
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-    # setup .npmrc using NODE_AUTH_TOKEN
     - name: Setup .npmrc file for publish
       uses: actions/setup-node@v2
       with:
@@ -97,7 +102,7 @@ jobs:
         git config --global user.name "lerna-ci@$GITHUB_ACTOR"
 
     - name: Check if able to publish changes
-      run: npm whoami # will throw and exit if npm is not ready to publish
+      run: npm whoami
 
     - name: Install dependencies
       run: | 
@@ -106,4 +111,4 @@ jobs:
         npm run build
 
     - name: Publish
-      run: lerna publish minor --no-verify-access --yes # the flag is needed if NPM_TOKEN is an Automation Token
+      run: lerna publish minor --no-verify-access --yes
