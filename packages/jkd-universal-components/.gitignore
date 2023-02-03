@@ -1,6 +1,7 @@
 dist/
 www/
 loader/
+storybook-static
 
 *~
 *.sw[mnpcod]
@@ -25,4 +26,3 @@ Thumbs.db
 UserInterfaceState.xcuserstate
 .env
 
-storybook-static/
