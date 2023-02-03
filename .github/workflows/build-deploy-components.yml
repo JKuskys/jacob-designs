@@ -31,6 +31,7 @@ jobs:
     steps:
       - uses: browser-actions/setup-chrome@v1
       - uses: actions/checkout@v3
+      - run: npm install
       - run: npm run bootstrap
       - run: npm run test-e2e
 
@@ -45,6 +46,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - run: npm install
       - run: npm run bootstrap
       - run: npm run test-jest
 
@@ -73,6 +75,7 @@ jobs:
 
       - name: Install and Build 🔧 # This example project is built using npm and outputs the result to the 'build' folder. Replace with the commands required to build your project, or remove this step entirely if your site is pre-built.
         run: |
+          npm install
           npm run bootstrap
           npm run build
           npm run build-storybook
@@ -92,6 +95,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - run: npm install
       - run: npm run bootstrap
       - run: npm run build
       - uses: JS-DevTools/npm-publish@v1
