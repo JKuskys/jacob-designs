@@ -100,4 +100,4 @@ jobs:
         npm run bootstrap
 
     - name: Publish
-      run: lerna publish --no-verify-access # the flag is needed if NPM_TOKEN is an Automation Token
+      run: lerna publish minor --no-verify-access --force-publish # the flag is needed if NPM_TOKEN is an Automation Token
