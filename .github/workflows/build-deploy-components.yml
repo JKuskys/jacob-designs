@@ -23,11 +23,13 @@ jobs:
     name: Test e2e
     needs: build
     runs-on: ubuntu-latest
-    container: node:14-alpine
 
     steps:
-      - uses: browser-actions/setup-chrome@v1
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3      
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+        registry-url: 'https://registry.npmjs.org'
       - run: npm install
       - run: npm run bootstrap
       - run: npm run test-e2e
@@ -36,10 +38,13 @@ jobs:
     name: Test components
     needs: build
     runs-on: ubuntu-latest
-    container: node:14-alpine
 
     steps:
       - uses: actions/checkout@v3
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+          registry-url: 'https://registry.npmjs.org'
       - run: npm install
       - run: npm run bootstrap
       - run: npm run test-jest
@@ -63,7 +68,7 @@ jobs:
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: ./packages/jkd-universal-components/storybook-static # The folder the action should deploy.
+          folder: packages/jkd-universal-components/storybook-static # The folder the action should deploy.
 
 
   publish-package:
@@ -101,4 +106,4 @@ jobs:
         npm run build
 
     - name: Publish
-      run: lerna publish minor --no-verify-access --force-publish --yes # the flag is needed if NPM_TOKEN is an Automation Token
+      run: lerna publish minor --no-verify-access --yes # the flag is needed if NPM_TOKEN is an Automation Token
