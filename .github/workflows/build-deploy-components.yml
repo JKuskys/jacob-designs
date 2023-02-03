@@ -44,22 +44,8 @@ jobs:
       - run: npm run bootstrap
       - run: npm run test-jest
 
-  increase-version:
-    name: Bump package version
-    needs: []   
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v2
-      - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
-      - run: VERSION=$(node -p "require('./packages/jkd-universal-components/package.json').version")
-      - run: VERSION=$(node -p "require('./packages/jkd-angular-components/projects/jkd-angular-component-package/package.json').version")
-      - run: git tag ${VERSION}
-      - run: git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" --follow-tags
-
   publish-storybook:
-    name: Deploy storybook
-    needs: [increase-version]  
+    name: Deploy storybook 
     runs-on: ubuntu-latest
     container: node:14-alpine
 
@@ -82,21 +68,36 @@ jobs:
 
   publish-package:
     name: Deploy npm package
-    needs: [increase-version]  
     runs-on: ubuntu-latest
-    container: node:14-alpine
-
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} # set this token manually
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-      - run: npm install
-      - run: npm run bootstrap
-      - run: npm run build
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          package: ./packages/jkd-universal-components/package.json
-      - uses: JS-DevTools/npm-publish@v1
-        with:
-          token: ${{ secrets.NPM_TOKEN }}
-          package: ./packages/jkd-angular-components/projects/jkd-angular-component-package/package.json
+
+    - name: Checkout
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: "0" # pulls all history and tags for Lerna to detect what packages changed.
+        token: ${{ secrets.GITHUB_TOKEN }} # this token is available by default
+
+    # setup .npmrc using NODE_AUTH_TOKEN
+    - name: Setup .npmrc file for publish
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: Configure Git User
+      run: |
+        git config --global user.email "lerna-ci@jitsu.com"
+        git config --global user.name "lerna-ci@$GITHUB_ACTOR"
+
+    - name: Check if able to publish changes
+      run: npm whoami # will throw and exit if npm is not ready to publish
+
+    - name: Install dependencies
+      run: | 
+        npm install
+        npm run bootstrap
+
+    - name: Publish
+      run: lerna publish --no-verify-access # the flag is needed if NPM_TOKEN is an Automation Token
