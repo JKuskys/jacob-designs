@@ -46,20 +46,20 @@ jobs:
 
   increase-version:
     name: Bump package version
-    needs: [build, test-components]   
+    needs: []   
     runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
       - run: git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
       - run: VERSION=$(node -p "require('./packages/jkd-universal-components/package.json').version")
-      - run: VERSION=$(node -p "require('./packages/jkd-angular-components/package.json').version")
+      - run: VERSION=$(node -p "require('./packages/jkd-angular-components/projects/jkd-angular-component-package/package.json').version")
       - run: git tag ${VERSION}
       - run: git push "https://$GITHUB_ACTOR:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git" --follow-tags
 
   publish-storybook:
     name: Deploy storybook
-    needs: [build, test-components, increase-version]  
+    needs: [increase-version]  
     runs-on: ubuntu-latest
     container: node:14-alpine
 
@@ -82,7 +82,7 @@ jobs:
 
   publish-package:
     name: Deploy npm package
-    needs: [build, test-components, increase-version]  
+    needs: [increase-version]  
     runs-on: ubuntu-latest
     container: node:14-alpine
 
@@ -99,4 +99,4 @@ jobs:
       - uses: JS-DevTools/npm-publish@v1
         with:
           token: ${{ secrets.NPM_TOKEN }}
-          package: ./packages/jkd-angular-components/package.json
+          package: ./packages/jkd-angular-components/projects/jkd-angular-component-package/package.json
