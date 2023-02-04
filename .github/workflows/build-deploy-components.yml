@@ -9,57 +9,58 @@ permissions:
 concurrency: ci-${{ github.ref }}
 
 jobs:
-  # build:
-  #   name: Build
-  #   runs-on: ubuntu-latest
-  #   container: node:14-alpine
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    container: node:14-alpine
 
-  #   steps:
-  #     - name: Checkout 🛎️
-  #       uses: actions/checkout@v3
-  #     - name: Install and build 🔧
-  #       run: |
-  #         npm install
-  #         npm run bootstrap
-  #         npm run build
-  #         npm run build-storybook
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Install and build 🔧
+        run: |
+          npm install
+          npm run bootstrap
+          npm run build
+          npm run build-storybook
 
-  # test-e2e:
-  #   name: Test e2e
-  #   needs: build
-  #   runs-on: ubuntu-latest
+  test-e2e:
+    name: Test e2e
+    needs: build
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout 🛎️
-  #       uses: actions/checkout@v3
-  #     - name: Install 🔧
-  #       run: |
-  #         npm install
-  #         npm run bootstrap
-  #     - name: Test 🔧
-  #       run: |
-  #         npm run test-e2e
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Install 🔧
+        run: |
+          npm install
+          npm run bootstrap
+      - name: Test 🔧
+        run: |
+          npm run test-e2e
 
-  # test-components:
-  #   name: Test components
-  #   needs: build
-  #   runs-on: ubuntu-latest
+  test-components:
+    name: Test components
+    needs: build
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - name: Checkout 🛎️
-  #       uses: actions/checkout@v3
-  #     - name: Install 🔧
-  #       run: |
-  #         npm install
-  #         npm run bootstrap
-  #     - name: Test 🔧
-  #       run: |
-  #         npm run test-jest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v3
+      - name: Install 🔧
+        run: |
+          npm install
+          npm run bootstrap
+      - name: Test 🔧
+        run: |
+          npm run test-jest
 
   publish-storybook:
     name: Deploy storybook 
     runs-on: ubuntu-latest
     container: node:14-alpine
+    needs: [test-e2e, test-components]
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -78,43 +79,41 @@ jobs:
         with:
           email: j.kuskys1@gmail.com
           build_dir: packages/jkd-universal-components/storybook-static
-      # uses: JamesIves/github-pages-deploy-action@v4
-      # with:
-      #   folder: storybook-static # The folder the action should deploy.
 
 
-  # publish-package:
-  #   name: Deploy npm package
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-  #   steps:
+  publish-package:
+    name: Deploy npm package
+    runs-on: ubuntu-latest    
+    needs: [test-e2e, test-components]
+    env:
+      NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+    steps:
 
-  #   - name: Checkout 🛎️
-  #     uses: actions/checkout@v2
-  #     with:
-  #       fetch-depth: "0"
-  #       token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Checkout 🛎️
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: "0"
+        token: ${{ secrets.GITHUB_TOKEN }}
 
-  #   - name: Setup .npmrc file for publish
-  #     uses: actions/setup-node@v2
-  #     with:
-  #       node-version: '14.x'
-  #       registry-url: 'https://registry.npmjs.org'
+    - name: Setup .npmrc file for publish
+      uses: actions/setup-node@v2
+      with:
+        node-version: '14.x'
+        registry-url: 'https://registry.npmjs.org'
 
-  #   - name: Configure Git User
-  #     run: |
-  #       git config --global user.email "lerna-ci@jitsu.com"
-  #       git config --global user.name "lerna-ci@$GITHUB_ACTOR"
+    - name: Configure Git User
+      run: |
+        git config --global user.email "lerna-ci@jitsu.com"
+        git config --global user.name "lerna-ci@$GITHUB_ACTOR"
 
-  #   - name: Check if able to publish changes
-  #     run: npm whoami
+    - name: Check if able to publish changes
+      run: npm whoami
 
-  #   - name: Install dependencies
-  #     run: | 
-  #       npm install
-  #       npm run bootstrap
-  #       npm run build
+    - name: Install dependencies
+      run: | 
+        npm install
+        npm run bootstrap
+        npm run build
 
-  #   - name: Publish
-  #     run: lerna publish minor --no-verify-access --yes
+    - name: Publish
+      run: lerna publish minor --no-verify-access --yes
