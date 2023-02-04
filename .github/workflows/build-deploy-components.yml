@@ -72,8 +72,12 @@ jobs:
           npm run build-storybook
 
       - name: Deploy 🚀
-        run: |
-          npm run deploy-storybook
+        uses: Cecilapp/GitHub-Pages-deploy@v3
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          email: j.kuskys1@gmail.com
+          build_dir: packages/jkd-universal-components/storybook-static
       # uses: JamesIves/github-pages-deploy-action@v4
       # with:
       #   folder: storybook-static # The folder the action should deploy.
