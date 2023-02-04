@@ -72,9 +72,6 @@ jobs:
           npm run build
           npm run build-storybook
 
-      - name: Set project dir environment var
-        run: git config --global --add safe.directory '*'
-
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
