@@ -5,6 +5,7 @@
     "test-e2e": "lerna run test-e2e --stream",
     "test-jest": "lerna run test-jest --stream",
     "build-storybook": "lerna run build-storybook --stream",
+    "deploy-storybook": "gh-pages -d packages/jkd-universal-components/storybook-static",
     "bootstrap": "lerna bootstrap"
   },
   "name": "root",
@@ -14,6 +15,7 @@
   ],
   "devDependencies": {
     "@types/node": "^18.11.18",
+    "gh-pages": "^5.0.0",
     "lerna": "^6.4.1",
     "typescript": "^4.9.5"
   }
