@@ -58,7 +58,9 @@ jobs:
     name: Deploy storybook 
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
-    container: node:14-alpine
+    strategy:
+      matrix:
+        node-version: [14.x]
 
     steps:
       - name: Checkout 🛎️
