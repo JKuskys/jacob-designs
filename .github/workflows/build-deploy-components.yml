@@ -10,6 +10,7 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    container: node:14-alpine
 
     steps:
       - name: Checkout 🛎️
@@ -57,6 +58,7 @@ jobs:
     name: Deploy storybook 
     concurrency: ci-${{ github.ref }}
     runs-on: ubuntu-latest
+    container: node:14-alpine
 
     steps:
       - name: Checkout 🛎️
