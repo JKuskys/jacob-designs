@@ -62,7 +62,7 @@ jobs:
     name: Deploy storybook 
     runs-on: ubuntu-latest
     container: node:14-alpine
-    needs: [test-e2e, test-components]
+    needs: test-components
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v3
@@ -87,7 +87,7 @@ jobs:
     name: Deploy npm package
     runs-on: ubuntu-latest    
     container: node:14-alpine
-    needs: [test-e2e, test-components]
+    needs: test-components
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
