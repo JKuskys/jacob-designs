@@ -1,6 +1,6 @@
 {
   "name": "jkd-vue-components",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "> TODO: description",
   "author": "BuildTools <unconfigured@null.spigotmc.org>",
   "homepage": "https://github.com/JKuskys/jacob-designs#readme",
@@ -29,7 +29,7 @@
     "vue": "^3.2.47"
   },
   "dependencies": {
-    "jkd-universal-components": "^0.15.0"
+    "jkd-universal-components": "^0.16.0"
   },
   "publishConfig": {
     "access": "public"
