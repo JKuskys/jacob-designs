@@ -28,6 +28,7 @@ jobs:
     name: Test e2e
     needs: build
     runs-on: ubuntu-latest
+    container: node:14-alpine
 
     steps:
       - name: Checkout 🛎️
@@ -44,6 +45,7 @@ jobs:
     name: Test components
     needs: build
     runs-on: ubuntu-latest
+    container: node:14-alpine
 
     steps:
       - name: Checkout 🛎️
@@ -84,6 +86,7 @@ jobs:
   publish-package:
     name: Deploy npm package
     runs-on: ubuntu-latest    
+    container: node:14-alpine
     needs: [test-e2e, test-components]
     env:
       NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
