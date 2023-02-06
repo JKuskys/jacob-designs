@@ -1,4 +1,5 @@
 import { angularOutputTarget, ValueAccessorConfig } from '@stencil/angular-output-target';
+import { reactOutputTarget } from '@stencil/react-output-target';
 import { Config } from '@stencil/core';
 
 const angularValueAccessorBindings: ValueAccessorConfig[] = [
@@ -18,6 +19,11 @@ export const config: Config = {
       directivesProxyFile: '../jkd-angular-components/projects/jkd-angular-component-package/src/lib/stencil-generated/components.ts',
       directivesArrayFile: '../jkd-angular-components/projects/jkd-angular-component-package/src/lib/stencil-generated/index.ts',
       valueAccessorConfigs: angularValueAccessorBindings
+    }),
+    reactOutputTarget({
+      componentCorePackage: 'jkd-universal-components',
+      proxiesFile: '../jkd-react-components/src/components/stencil-generated/index.ts',
+      includeDefineCustomElements: true,
     }),
     {
       type: 'dist',
