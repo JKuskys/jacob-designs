@@ -28,7 +28,6 @@ jobs:
     name: Test e2e
     needs: build
     runs-on: ubuntu-latest
-    container: node:14-alpine
 
     steps:
       - name: Checkout 🛎️
@@ -45,7 +44,6 @@ jobs:
     name: Test components
     needs: build
     runs-on: ubuntu-latest
-    container: node:14-alpine
 
     steps:
       - name: Checkout 🛎️
